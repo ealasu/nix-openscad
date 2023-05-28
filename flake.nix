@@ -76,4 +76,5 @@
           maintainers = with lib.maintainers; [ bjornfor raskin gebner ];
         };
       };
+  };
 }
