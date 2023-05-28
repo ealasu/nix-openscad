@@ -4,7 +4,7 @@
   outputs = { self, nixpkgs }@inputs: {
     packages.x86_64-linux.default =
       with import nixpkgs { system = "x86_64-linux"; };
-      mkDerivation rec {
+      stdenv.mkDerivation rec {
         pname = "openscad";
         version = "20230527";
 
