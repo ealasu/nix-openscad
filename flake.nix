@@ -4,24 +4,27 @@
   outputs = { self, nixpkgs }@inputs: {
     packages.x86_64-linux.default =
       with import nixpkgs { system = "x86_64-linux"; };
+      let spacenavSupport = stdenv.isLinux; in
       stdenv.mkDerivation rec {
         pname = "openscad";
-        version = "20230527";
+        version = "2023.05.27";
 
         src = fetchFromGitHub {
           owner = "openscad";
           repo = "openscad";
           rev = "e2ea2a6abe461e87d9dba73ec46e0151eb60ac39";
-          sha256 = "";
+          sha256 = "sha256-Hx1f7e0WwaHjcSVN/GctBa0So9PALlyEHQzAyAcV+e0=";
           fetchSubmodules = true;
         };
 
-        nativeBuildInputs = [ bison flex pkg-config gettext cmake ];
+        nativeBuildInputs = [ bison flex pkg-config gettext cmake qt5.qmake qt5.wrapQtAppsHook ];
 
         buildInputs = [
           eigen boost glew opencsg cgal_5 mpfr gmp glib
           harfbuzz lib3mf libzip double-conversion freetype fontconfig
-          qtbase qtmultimedia qscintilla cairo
+          #qtbase qtmultimedia
+          qt5.qtbase qt5.qtmultimedia
+          qscintilla cairo
           python3
           python310Packages.pillow
           python310Packages.numpy
@@ -29,8 +32,8 @@
           python310Packages.setuptools
           virtualenv
           tbb
-        ] ++ lib.optionals stdenv.isLinux [ libGLU libGL wayland wayland-protocols qtwayland xorg.libXdmcp xorg.libSM ]
-          ++ lib.optional stdenv.isDarwin qtmacextras
+        ] ++ lib.optionals stdenv.isLinux [ libGLU libGL wayland wayland-protocols qt5.qtwayland xorg.libXdmcp xorg.libSM ]
+          ++ lib.optional stdenv.isDarwin qt5.qtmacextras
           ++ lib.optional spacenavSupport libspnav
         ;
 
