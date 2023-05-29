@@ -40,6 +40,7 @@
         cmakeFlags = [
           "VERSION=${version}"
           "-DOPENSCAD_VERSION=${version}"
+          "-DEXPERIMENTAL=1"
         ] ++
           lib.optionals spacenavSupport [
             "ENABLE_SPNAV=1"
